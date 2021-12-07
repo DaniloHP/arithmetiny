@@ -2,7 +2,7 @@ import Rule from "./rule";
 import BinaryRule from "./binary-rule";
 import UnaryRule from "./unary-rule";
 
-export default class MathGrammar {
+export class MathGrammar {
   private readonly levels: Rule[][];
 
   constructor() {

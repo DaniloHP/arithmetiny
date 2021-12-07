@@ -1,4 +1,4 @@
-import MathGrammar from "./math-grammar";
+import { MathGrammar } from "./math-grammar";
 
 const grammar = new MathGrammar();
 console.log(grammar.evaluate("(1)"));
