@@ -2,7 +2,6 @@ import Rule from "./rule";
 
 export default class UnaryRule extends Rule {
   private fn: (a: number) => number;
-
   constructor(regex: RegExp, fn: (a: number) => number, id: string) {
     super(regex, id);
     this.fn = fn;

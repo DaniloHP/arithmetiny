@@ -1,6 +1,7 @@
 import Rule from "./rule";
 import BinaryRule from "./binary-rule";
 import UnaryRule from "./unary-rule";
+import VarRule from "./var-rule";
 
 export class MathGrammar {
   private readonly levels: Rule[][];
@@ -84,7 +85,8 @@ export class MathGrammar {
     const parenRule = new UnaryRule(/^ *\((.*)\) *$/, ident, "PAREN");
     const negRule = new UnaryRule(/^ *-(.*) *$/, (a) => -a, "NEGATIVE");
     const scalar = new UnaryRule(/^ *\d+ *$/, ident, "SCALAR");
-    const rootExpr = [parenRule, negRule, scalar];
+    const vars = new VarRule();
+    const rootExpr = [parenRule, negRule, scalar, vars];
 
     this.populateBinaryRules(
       asExpr,

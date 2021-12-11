@@ -1,9 +1,9 @@
 import Rule from "./rule";
 
 export default class BinaryRule extends Rule {
-  protected fn: (a: number, b: number) => number;
+  protected fn: (...nums: number[]) => number;
 
-  constructor(regex: RegExp, fn: (a: number, b: number) => number, id: string) {
+  constructor(regex: RegExp, fn: (...nums: number[]) => number, id: string) {
     super(regex, id);
     this.fn = fn;
   }
@@ -15,7 +15,7 @@ export default class BinaryRule extends Rule {
       if (numChildren === 0) {
         return +toCheck;
       }
-      const resultVector: [number, number] = [NaN, NaN];
+      const resultVector = new Array<number>(numChildren).fill(NaN);
       let i = 0;
       for (const { groupInd, children } of this.children) {
         const currGroup = match[groupInd];
