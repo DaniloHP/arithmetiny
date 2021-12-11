@@ -1,68 +1,47 @@
+import AbstractRule from "./abstract-rule";
 import Rule from "./rule";
-import BinaryRule from "./binary-rule";
-import UnaryRule from "./unary-rule";
 import VarRule from "./var-rule";
 
 export class MathGrammar {
-  private readonly levels: Rule[][];
+  private readonly levels: AbstractRule[][];
 
   constructor() {
     const ident = (a: number) => a;
     const down = /^ *(.*) *$/;
-    const addRule = new BinaryRule(
-      /^ *(.*) *\+ *(.*) *$/,
-      (a, b) => a + b,
-      "ADD"
-    );
-    const addRuleRight = new BinaryRule(
+    const addRule = new Rule(/^ *(.*) *\+ *(.*) *$/, (a, b) => a + b, "ADD");
+    const addRuleRight = new Rule(
       /^ *(.*?) *\+ *(.*) *$/,
       (a, b) => a + b,
       "ADD_RIGHT"
     );
-    const subRule = new BinaryRule(
-      /^ *(.*) *- *(.*) *$/,
-      (a, b) => a - b,
-      "SUB"
-    );
-    const subRuleRight = new BinaryRule(
+    const subRule = new Rule(/^ *(.*) *- *(.*) *$/, (a, b) => a - b, "SUB");
+    const subRuleRight = new Rule(
       /^ *(.*?) *- *(.*) *$/,
       (a, b) => a - b,
       "SUB_RIGHT"
     );
-    const asDownRule = new UnaryRule(down, ident, "AS_DOWN");
+    const asDownRule = new Rule(down, ident, "AS_DOWN");
     const asExpr = [addRule, addRuleRight, subRule, subRuleRight, asDownRule];
 
-    const mulRule = new BinaryRule(
-      /^ *(.*) *\* *(.*) *$/,
-      (a, b) => a * b,
-      "MULT"
-    );
-    const mulRuleRight = new BinaryRule(
+    const mulRule = new Rule(/^ *(.*) *\* *(.*) *$/, (a, b) => a * b, "MULT");
+    const mulRuleRight = new Rule(
       /^ *(.*?) *\* *(.*) *$/,
       (a, b) => a * b,
       "MULT_RIGHT"
     );
-    const divRule = new BinaryRule(
-      /^ *(.*) *\/ *(.*) *$/,
-      (a, b) => a / b,
-      "DIV"
-    );
-    const divRuleRight = new BinaryRule(
+    const divRule = new Rule(/^ *(.*) *\/ *(.*) *$/, (a, b) => a / b, "DIV");
+    const divRuleRight = new Rule(
       /^ *(.*?) *\/ *(.*) *$/,
       (a, b) => a / b,
       "DIV_RIGHT"
     );
-    const modRule = new BinaryRule(
-      /^ *(.*) *% *(.*) *$/,
-      (a, b) => a % b,
-      "MOD"
-    );
-    const modRuleRight = new BinaryRule(
+    const modRule = new Rule(/^ *(.*) *% *(.*) *$/, (a, b) => a % b, "MOD");
+    const modRuleRight = new Rule(
       /^ *(.*?) *% *(.*) *$/,
       (a, b) => a % b,
       "MOD_RIGHT"
     );
-    const mmdDownRule = new UnaryRule(down, ident, "MMD_DOWN");
+    const mmdDownRule = new Rule(down, ident, "MMD_DOWN");
     const mmdExpr = [
       mulRule,
       mulRuleRight,
@@ -73,18 +52,18 @@ export class MathGrammar {
       mmdDownRule,
     ];
 
-    const expRule = new BinaryRule(/^ *(.*) *\^ *(.*) *$/, Math.pow, "EXP");
-    const expRuleRight = new BinaryRule(
+    const expRule = new Rule(/^ *(.*) *\^ *(.*) *$/, Math.pow, "EXP");
+    const expRuleRight = new Rule(
       /^ *(.*?) *\^ *(.*) *$/,
       Math.pow,
       "EXP_RIGHT"
     );
-    const expDownRule = new UnaryRule(down, ident, "EXP_DOWN");
+    const expDownRule = new Rule(down, ident, "EXP_DOWN");
     const expExpr = [expRule, expRuleRight, expDownRule];
 
-    const parenRule = new UnaryRule(/^ *\((.*)\) *$/, ident, "PAREN");
-    const negRule = new UnaryRule(/^ *-(.*) *$/, (a) => -a, "NEGATIVE");
-    const scalar = new UnaryRule(/^ *\d+ *$/, ident, "SCALAR");
+    const parenRule = new Rule(/^ *\((.*)\) *$/, ident, "PAREN");
+    const negRule = new Rule(/^ *-(.*) *$/, (a) => -a, "NEGATIVE");
+    const scalar = new Rule(/^ *\d+ *$/, ident, "SCALAR");
     const vars = new VarRule();
     const rootExpr = [parenRule, negRule, scalar, vars];
 
@@ -126,9 +105,9 @@ export class MathGrammar {
   };
 
   populateBinaryRules = (
-    left: Rule[],
-    right: Rule[],
-    ...toPopulate: Rule[]
+    left: AbstractRule[],
+    right: AbstractRule[],
+    ...toPopulate: AbstractRule[]
   ) => {
     toPopulate.forEach((rule) => {
       rule.addChildren(1, ...left);

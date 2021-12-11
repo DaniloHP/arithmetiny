@@ -1,8 +1,8 @@
-import Rule from "./rule";
+import AbstractRule from "./abstract-rule";
 
 type VarPair = [string, number];
 
-export default class VarRule extends Rule {
+export default class VarRule extends AbstractRule {
   private static readonly varContext = new Map<string, number>([
     ["e", Math.E],
     ["pi", Math.PI],
