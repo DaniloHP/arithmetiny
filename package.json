@@ -1,6 +1,6 @@
 {
   "name": "arithmetiny",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A tiny math parser for evaluating simple but arbitrary arithmetic expression",
   "main": "dist/index.min.js",
   "scripts": {
