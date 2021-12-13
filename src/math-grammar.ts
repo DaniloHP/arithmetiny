@@ -1,4 +1,5 @@
 import AbstractRule from "./abstract-rule";
+import FunctionRule from "./function-rule";
 import Rule from "./rule";
 import VarRule from "./var-rule";
 
@@ -65,7 +66,8 @@ export class MathGrammar {
     const negRule = new Rule(/^ *-(.*) *$/, (a) => -a, "NEGATIVE");
     const scalar = new Rule(/^ *\d+ *$/, ident, "SCALAR");
     const vars = new VarRule();
-    const rootExpr = [parenRule, negRule, scalar, vars];
+    const functions = new FunctionRule(asExpr);
+    const rootExpr = [parenRule, negRule, scalar, vars, functions];
 
     this.populateBinaryRules(
       asExpr,
@@ -107,7 +109,7 @@ export class MathGrammar {
   populateBinaryRules = (
     left: AbstractRule[],
     right: AbstractRule[],
-    ...toPopulate: AbstractRule[]
+    ...toPopulate: Rule[]
   ) => {
     toPopulate.forEach((rule) => {
       rule.addChildren(1, ...left);

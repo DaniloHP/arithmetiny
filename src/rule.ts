@@ -2,11 +2,17 @@ import AbstractRule from "./abstract-rule";
 
 export default class Rule extends AbstractRule {
   protected fn: (...nums: number[]) => number;
+  protected children: { groupInd: number; children: AbstractRule[] }[];
 
   constructor(regex: RegExp, fn: (...nums: number[]) => number, id: string) {
     super(regex, id);
+    this.children = [];
     this.fn = fn;
   }
+
+  public addChildren = (groupNum: number, ...rules: AbstractRule[]) => {
+    this.children.push({ groupInd: groupNum, children: rules });
+  };
 
   public evaluate = (toCheck: string): number => {
     const match = this.regex.exec(toCheck);
