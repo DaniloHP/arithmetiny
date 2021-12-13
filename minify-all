@@ -1,0 +1,14 @@
+#!/bin/sh
+for f in "$@" 
+do
+    out="${f%.*}.min.js"
+    cmd="npx terser --compress -o '$out' -- '$f'"
+    echo "$cmd"
+    eval "$cmd"
+    ret=$?
+    if [ $ret -ne 0 ]; then
+        exit 1
+    fi
+done
+
+rm $@

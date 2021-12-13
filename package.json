@@ -2,7 +2,7 @@
   "name": "arithmetiny",
   "version": "0.0.3",
   "description": "A tiny math parser for evaluating simple but arbitrary arithmetic expression",
-  "main": "dist/index.js",
+  "main": "dist/index.min.js",
   "scripts": {
     "test": "jest",
     "prepublish": "tsc"
@@ -30,6 +30,7 @@
     "babel-jest": "^27.4.4",
     "jest": "^27.4.4",
     "prettier": "^2.5.1",
+    "terser": "^5.10.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.3"
   }
