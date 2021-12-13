@@ -1,3 +1,5 @@
+*.config.*
+tsconfig.json
 .prettierrc
 test
 src
