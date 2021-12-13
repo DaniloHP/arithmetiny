@@ -8,6 +8,10 @@ const config = {
   entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
+    filename: "index.js",
+    library: "arithmetiny",
+    libraryTarget: "umd",
+    globalObject: "this",
   },
   plugins: [
     // Add your plugins here

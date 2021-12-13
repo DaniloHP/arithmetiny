@@ -1,4 +1,4 @@
-export declare class MathGrammar {
+export declare class Arithmetiny {
     private readonly levels;
     constructor();
     evaluate: (expr: string) => number;

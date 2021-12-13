@@ -1,1 +1,0 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});class AbstractRule{constructor(regex,id){this.allNotNaN=arr=>{for(const n of arr)if(isNaN(n))return!1;return!0},this.toString=()=>this.id,this.regex=regex,this.id=id}}exports.default=AbstractRule;
