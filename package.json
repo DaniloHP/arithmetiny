@@ -2,9 +2,10 @@
   "name": "arithmetiny",
   "version": "0.0.1",
   "description": "A tiny math parser for evaluating simple but arbitrary arithmetic expression",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "tsc"
   },
   "repository": {
     "type": "git",
