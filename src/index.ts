@@ -3,7 +3,7 @@ import FunctionRule from './function-rule'
 import Rule from './rule'
 import VarRule from './var-rule'
 
-export class MathGrammar {
+export class Arithmetiny {
   private readonly levels: AbstractRule[][]
 
   constructor() {
