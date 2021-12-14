@@ -15,7 +15,7 @@ export default class FunctionRule extends AbstractRule {
   private readonly children: AbstractRule[];
 
   constructor(argChildren: AbstractRule[], extraFns?: FnPair[]) {
-    super(/^ *([a-zA-Z_][\w]{0,31})\(([+\-*/^%\w ,()]*)\) *$/, "FUNCTION");
+    super(/^ *([a-zA-Z_][\w]{0,31})(\(.*\)) *$/, "FUNCTION");
     this.children = argChildren;
     if (extraFns) {
       for (const { name, fn } of extraFns) {
@@ -41,26 +41,46 @@ export default class FunctionRule extends AbstractRule {
     return expected !== 1;
   };
 
+  private parMatch = (args: string): number => {
+    const open = 40; // (
+    const close = 41; // )
+    let stack = 0;
+    let last = 0;
+    for (let i = 0; i < args.length && stack >= 0; i++) {
+      const pt = args.codePointAt(i);
+      if (pt === open) {
+        stack++;
+      } else if (pt === close) {
+        stack--;
+        last = i;
+      }
+    }
+    return stack === 0 ? last : -1;
+  };
+
   public eval = (toEval: string): number => {
     const match = this.regex.exec(toEval);
     if (match) {
-      const [, fnName, fnArgs] = match;
-      const fn = this.fnContext.get(fnName);
-      if (fn) {
-        const args = fnArgs.split(/ *, */);
-        if (this.argsConflict(args, fn.length)) {
-          throw Error(
-            `Function ${fnName} expected ${fn.length} argument(s), got ${args.length}`
-          );
-        } else if (fn.length === 0) {
-          return fn();
+      const argsEnd = this.parMatch(match[2]);
+      if (argsEnd >= 1) {
+        const fn = this.fnContext.get(match[1]);
+        const fnArgs = match[2].substring(1, argsEnd);
+        if (fn) {
+          const args = fnArgs.split(/ *, */);
+          if (this.argsConflict(args, fn.length)) {
+            throw Error(
+              `Function ${match[1]} expected ${fn.length} argument(s), got ${args.length}: "${fnArgs}"`
+            );
+          } else if (fn.length === 0) {
+            return fn();
+          }
+          const evalItems = args.map((a) => {
+            return { toEval: a, children: this.children };
+          });
+          return this.evalChildren(evalItems, fn);
+        } else {
+          throw new Error(`Function "${match[1]}" is not defined`);
         }
-        const evalItems = args.map((a) => {
-          return { toEval: a, children: this.children };
-        });
-        return this.evalChildren(evalItems, fn);
-      } else {
-        throw new Error(`Function "${fnName}" is not defined`);
       }
     }
     return NaN;

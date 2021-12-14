@@ -30,6 +30,7 @@
     "@types/jest": "^27.0.3",
     "@webpack-cli/generators": "^2.4.1",
     "babel-jest": "^27.4.4",
+    "colors": "^1.4.0",
     "jest": "^27.4.4",
     "prettier": "^2.5.1",
     "terser": "^5.10.0",

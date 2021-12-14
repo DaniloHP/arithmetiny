@@ -71,7 +71,7 @@ export class Arithmetiny {
     const expExpr = [expRule, expRuleRight, expDownRule];
 
     const parenRule = new Rule(/^ *\((.+)\) *$/, ident, "PAREN");
-    const negRule = new Rule(/^ *-(.+) *$/, (a) => -a, "NEGATIVE");
+    const negRule = new Rule(/^ *-(?!-.+)(.+) *$/, (a) => -a, "NEGATIVE");
     const scalar = new Rule(
       /^ *?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? *$/,
       ident,

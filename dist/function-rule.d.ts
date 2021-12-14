@@ -5,5 +5,6 @@ export default class FunctionRule extends AbstractRule {
     private readonly children;
     constructor(argChildren: AbstractRule[], extraFns?: FnPair[]);
     private argsConflict;
+    private parMatch;
     eval: (toEval: string) => number;
 }
