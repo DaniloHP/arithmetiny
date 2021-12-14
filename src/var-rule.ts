@@ -1,27 +1,35 @@
 import AbstractRule from "./abstract-rule";
-
-type VarPair = [string, number];
+import { VarPair } from "./index";
 
 export default class VarRule extends AbstractRule {
-  private static readonly varContext = new Map<string, number>([
+  private readonly varContext = new Map<VarPair["name"], VarPair["value"]>([
     ["e", Math.E],
     ["pi", Math.PI],
   ]);
 
-  constructor(...vars: VarPair[]) {
-    super(/^ *([a-zA-Z_][\w]{0,31}) *$/, "VAR");
-    for (const [name, value] of vars) {
-      VarRule.varContext.set(name, value);
+  constructor(extraVars?: VarPair[]) {
+    super(AbstractRule.IDENTIFIER_RE, "VAR");
+    if (extraVars) {
+      for (const { name, value } of extraVars) {
+        if (this.regex.test(name)) {
+          this.varContext.set(name, value);
+        } else {
+          throw new Error(
+            `Given variable "${name}" has an invalid identifier.`
+          );
+        }
+      }
     }
   }
 
-  public evaluate = (toCheck: string): number => {
-    const res = this.regex.exec(toCheck);
-    if (toCheck.length > 0 && res !== null) {
-      const varName = res[0];
-      const varVal = VarRule.varContext.get(varName);
+  public eval = (toEval: string): number => {
+    const match = this.regex.exec(toEval);
+    if (match) {
+      const varVal = this.varContext.get(match[1]);
       if (varVal !== undefined) {
         return varVal;
+      } else {
+        throw new Error(`Variable "${match[1]}" is not defined.`);
       }
     }
     return NaN;

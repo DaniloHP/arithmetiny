@@ -1,4 +1,15 @@
-import { MathGrammar } from "./math-grammar";
+import { Arithmetiny, Context } from "./index";
 
-const grammar = new MathGrammar();
-console.log(grammar.evaluate("abs(0 - sqrt(4))"));
+const asFn = async () => {
+  const ctx: Context = {
+    vars: [{ name: "yeah", value: 420 }],
+    functions: [
+      { name: "square", fn: (a) => a * a },
+      { name: "rand", fn: Math.random },
+    ],
+  };
+  const parser = new Arithmetiny(ctx);
+  await parser.evaluate("sin(1,2)");
+};
+
+asFn().then();

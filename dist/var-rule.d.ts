@@ -1,8 +1,7 @@
 import AbstractRule from "./abstract-rule";
-declare type VarPair = [string, number];
+import { VarPair } from "./index";
 export default class VarRule extends AbstractRule {
-    private static readonly varContext;
-    constructor(...vars: VarPair[]);
-    evaluate: (toCheck: string) => number;
+    private readonly varContext;
+    constructor(extraVars?: VarPair[]);
+    eval: (toEval: string) => number;
 }
-export {};
