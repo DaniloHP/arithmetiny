@@ -6,13 +6,17 @@ export declare type FnPair = {
     name: string;
     fn: (...nums: number[]) => number;
 };
-export declare type Context = {
+export interface Context {
     vars?: VarPair[];
     functions?: FnPair[];
-};
+}
 export declare class Arithmetiny {
-    private readonly levels;
+    private readonly topLevel;
+    private static readonly symbolToID;
+    private setUpGrammar;
     constructor(ctx?: Context);
+    setContext: (ctx: Context) => void;
     evaluate: (expr: string) => Promise<number>;
+    private fillNeededBranches;
     private populateBinaryRules;
 }

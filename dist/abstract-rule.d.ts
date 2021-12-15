@@ -1,7 +1,8 @@
 export default abstract class AbstractRule {
     protected regex: RegExp;
-    protected id: string;
+    protected id: RuleID;
     protected static readonly IDENTIFIER_RE: RegExp;
+    static neededBranches: Set<RuleID>;
     protected constructor(regex: RegExp, id: RuleID);
     abstract eval: (toEval: string) => number;
     protected evalChildren: (evalItems: {

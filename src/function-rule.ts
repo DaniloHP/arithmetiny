@@ -15,7 +15,7 @@ export default class FunctionRule extends AbstractRule {
   private readonly children: AbstractRule[];
 
   constructor(argChildren: AbstractRule[], extraFns?: FnPair[]) {
-    super(/^ *([a-zA-Z_][\w]{0,31})(\(.*\)) *$/, "FUNCTION");
+    super(/^([a-zA-Z_][\w]{0,31})(\(.*\))$/, "FUNCTION");
     this.children = argChildren;
     if (extraFns) {
       for (const { name, fn } of extraFns) {

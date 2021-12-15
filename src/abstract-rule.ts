@@ -1,7 +1,8 @@
 export default abstract class AbstractRule {
   protected regex: RegExp;
-  protected id: string;
-  protected static readonly IDENTIFIER_RE = /^ *([a-zA-Z_][\w]{0,31}) *$/;
+  protected id: RuleID;
+  protected static readonly IDENTIFIER_RE = /^([a-zA-Z_][\w]{0,31})$/;
+  static neededBranches = new Set<RuleID>();
 
   protected constructor(regex: RegExp, id: RuleID) {
     this.regex = regex;
@@ -18,6 +19,7 @@ export default abstract class AbstractRule {
     for (let i = 0; i < evalItems.length; i++) {
       const { toEval, children } = evalItems[i];
       for (const rule of children) {
+        if (!AbstractRule.neededBranches.has(rule.id)) continue;
         resultVector[i] = rule.eval(toEval);
         if (!isNaN(resultVector[i])) {
           if (i + 1 === resultVector.length) {
