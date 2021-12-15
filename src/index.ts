@@ -3,13 +3,41 @@ import FunctionRule from "./function-rule";
 import Rule from "./rule";
 import VarRule from "./var-rule";
 
-export type VarPair = { name: string; value: number };
-export type FnPair = { name: string; fn: (...nums: number[]) => number };
+export interface VarPair {
+  name: string;
+  value: number;
+}
+
+export interface FnPair {
+  name: string;
+  fn: (...nums: number[]) => number;
+}
 
 export interface Context {
   vars?: VarPair[];
   functions?: FnPair[];
 }
+
+//The regular expression variable and function names must abide by
+export const IDENTIFIER_RE = /^([a-zA-Z_][\w]{0,31})$/;
+
+export const BUILTIN_VARS: VarPair[] = [
+  { name: "e", value: Math.E },
+  { name: "pi", value: Math.PI },
+];
+
+export const BUILTIN_FUNCTIONS: FnPair[] = [
+  { name: "ln", fn: Math.log },
+  {
+    name: "log",
+    fn: (num: number, base: number) => Math.log(num) / Math.log(base),
+  },
+  { name: "sin", fn: Math.sin },
+  { name: "cos", fn: Math.cos },
+  { name: "tan", fn: Math.tan },
+  { name: "sqrt", fn: Math.sqrt },
+  { name: "abs", fn: Math.abs },
+];
 
 export class Arithmetiny {
   private readonly topLevel: AbstractRule[];

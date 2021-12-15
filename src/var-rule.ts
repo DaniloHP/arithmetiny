@@ -1,14 +1,13 @@
 import AbstractRule from "./abstract-rule";
-import { VarPair } from "./index";
+import { BUILTIN_VARS, IDENTIFIER_RE, VarPair } from "./index";
 
 export default class VarRule extends AbstractRule {
-  private readonly varContext = new Map<VarPair["name"], VarPair["value"]>([
-    ["e", Math.E],
-    ["pi", Math.PI],
-  ]);
+  private readonly varContext = new Map<VarPair["name"], VarPair["value"]>(
+    BUILTIN_VARS.map(({ name, value }) => [name, value])
+  );
 
   constructor(extraVars?: VarPair[]) {
-    super(AbstractRule.IDENTIFIER_RE, "VAR");
+    super(IDENTIFIER_RE, "VAR");
     if (extraVars) {
       for (const { name, value } of extraVars) {
         if (this.regex.test(name)) {

@@ -1,7 +1,6 @@
 export default abstract class AbstractRule {
   protected regex: RegExp;
   protected id: RuleID;
-  protected static readonly IDENTIFIER_RE = /^([a-zA-Z_][\w]{0,31})$/;
   static neededBranches = new Set<RuleID>();
 
   protected constructor(regex: RegExp, id: RuleID) {

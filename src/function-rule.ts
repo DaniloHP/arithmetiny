@@ -1,16 +1,10 @@
 import AbstractRule from "./abstract-rule";
-import { FnPair } from "./index";
+import { BUILTIN_FUNCTIONS, FnPair, IDENTIFIER_RE } from "./index";
 
 export default class FunctionRule extends AbstractRule {
-  private readonly fnContext = new Map<string, (...nums: number[]) => number>([
-    ["ln", Math.log],
-    ["log", (num: number, base: number) => Math.log(num) / Math.log(base)], //log base n
-    ["sin", Math.sin],
-    ["cos", Math.cos],
-    ["tan", Math.tan],
-    ["sqrt", Math.sqrt],
-    ["abs", Math.abs],
-  ]);
+  private readonly fnContext = new Map<string, (...nums: number[]) => number>(
+    BUILTIN_FUNCTIONS.map(({ name, fn }) => [name, fn])
+  );
 
   private readonly children: AbstractRule[];
 
@@ -19,7 +13,7 @@ export default class FunctionRule extends AbstractRule {
     this.children = argChildren;
     if (extraFns) {
       for (const { name, fn } of extraFns) {
-        if (AbstractRule.IDENTIFIER_RE.test(name)) {
+        if (IDENTIFIER_RE.test(name)) {
           this.fnContext.set(name, fn);
         } else {
           throw new Error(
